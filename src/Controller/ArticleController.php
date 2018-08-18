@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Psr\Log\LoggerInterface;
-use Michelf\MarkdownInterface;
+use App\Service\MarkdownHelper;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 
 class ArticleController extends AbstractController{
@@ -21,7 +21,7 @@ class ArticleController extends AbstractController{
         /**
          * @Route("/news/{slug}", name="app_show")
          */
-        public function show($slug, MarkdownInterface $markdown, AdapterInterface $cache) {
+        public function show($slug, MarkdownHelper $markdownHelper) {
             
             $comments = [
                 'I ate a normal rock once. It did NOT taste like bacon!',
@@ -59,13 +59,7 @@ class ArticleController extends AbstractController{
             adipisicing cow cillum tenderloin.
 EOF;
 
-            $item = $cache->getItem('markdown_'.md5($articleContent));
-            if(!$item->isHit()) {
-                $item->set($markdown->transform($articleContent));
-                $cache->save($item);
-            }
-            $articleContent = $item->get();
-
+            $articleContent = $markdownHelper->parse($articleContent);
             return $this->render('article/show.html.twig', [
                 'title' => ucwords(str_replace('-', ' ', $slug)),
                 'slug' => $slug,
