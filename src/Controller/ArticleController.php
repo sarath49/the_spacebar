@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Nexy\Slack\Client as NexyClient;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,8 +22,16 @@ class ArticleController extends AbstractController{
         /**
          * @Route("/news/{slug}", name="app_show")
          */
-        public function show($slug, MarkdownHelper $markdownHelper) {
-            
+        public function show($slug, MarkdownHelper $markdownHelper, NexyClient $slack) {
+
+            if ($slug == 'khan') {
+                $message = $slack->createMessage()
+                    ->from('Khan')
+                    ->withIcon(':ghost')
+                    ->setText('hello friend');
+                $slack->sendMessage($message);
+            }
+
             $comments = [
                 'I ate a normal rock once. It did NOT taste like bacon!',
                 'Woohoo! I\'m going on an all-asteroid diet!',
