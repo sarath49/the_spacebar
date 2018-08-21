@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Psr\Log\LoggerInterface;
-use App\Service\MarkdownHelper;
 
 class ArticleController extends AbstractController{
 
@@ -22,7 +21,7 @@ class ArticleController extends AbstractController{
         /**
          * @Route("/news/{slug}", name="app_show")
          */
-        public function show($slug, MarkdownHelper $markdownHelper, SlackClient $slack, EntityManagerInterface $em) {
+        public function show($slug, SlackClient $slack, EntityManagerInterface $em) {
 
             if ($slug == 'khan') {
                 $slack->sendMessage('Khan', 'Hi friend');
