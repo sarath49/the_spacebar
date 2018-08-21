@@ -41,7 +41,7 @@ EOF
             $article->setPublishedAt(new \DateTime(sprintf('-%d days', rand(1, 100))));
         }
         else {
-            $article->setPublishedAt(new \DateTime());
+           // $article->setPublishedAt(new \DateTime());
         }
 
         $em->persist($article);
