@@ -22,7 +22,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="article-text">
-                            {{ article.body|markdown }}
+                            {{ article.body|cached_markdown }}
                         </div>
                     </div>
                 </div>
